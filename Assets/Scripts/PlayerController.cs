@@ -27,18 +27,26 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
 
     private void FixedUpdate() {
-        Vector3 forwardMove = transform.forward * MoveSpeed * Time.deltaTime;
-        animator.SetBool("isRunning",true);
-        controller.Move(forwardMove);
+        if (isAlive)
+        {
+            Vector3 forwardMove = transform.forward * MoveSpeed * Time.deltaTime;
+            if (MoveSpeed > 16f)
+            {
+                animator.SetBool("isRunningFaster", true);
+                animator.SetBool("isRunning", false);
+
+            }
+            else
+            {
+                animator.SetBool("isRunning", true);
+                animator.SetBool("isRunningFaster", false);
+            }
+            controller.Move(forwardMove);
+        } 
     }
     void Update()
     {
         if (!isAlive) return;
-
-        if(transform.position.y < -5)
-        {
-            Die();
-        }
 
         //Check if Sphere is colliding with ground
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
@@ -57,20 +65,14 @@ public class PlayerController : MonoBehaviour
         
     }
 
-    void OnControllerColliderHit(ControllerColliderHit hit)
-    {
-        if(hit.transform.tag == "Obstacle")
-        {
-            Die();
-        }
-    }
-
     public void Die()
     {
         isAlive = false;
-        SceneManager.LoadScene("MainScene");
-
     }
 
-    
+    public void increaseSpeed()
+    {
+        float newMoveSpeed = (float)MoveSpeed * 0.25f;
+        MoveSpeed = MoveSpeed + newMoveSpeed;
+    }
 }

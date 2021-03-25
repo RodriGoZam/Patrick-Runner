@@ -63,7 +63,6 @@ public class GroundSpawner : MonoBehaviour
         //Debug.Log("Spawn Index: " + spawnPoint);
 
         int obstacleIndex = Random.Range(0, 2);
-        Debug.Log("Obstacle: " + obstacleIndex);
 
         GameObject obs = Instantiate(obstacles[obstacleIndex], spawnPoint.position, Quaternion.identity, transform);
         activeObstacles.Add(obs);
